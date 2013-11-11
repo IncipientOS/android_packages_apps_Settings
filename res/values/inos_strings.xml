@@ -62,6 +62,10 @@
     <string name="grey">Grey</string>
     <string name="default_string">Default</string>
 
+    <!-- CPU info overlay -->
+    <string name="show_cpu_info">Show CPU info</string>
+    <string name="show_cpu_info_summary">Screen overlay showing current CPU info</string>
+
     <!-- Grid-Style recents -->
     <string name="recents_use_grid_title">Enable grid recents</string>
     <string name="recents_use_grid_summary">Show grid style using AOSP recents</string>
