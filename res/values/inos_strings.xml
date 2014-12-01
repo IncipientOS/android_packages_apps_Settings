@@ -126,4 +126,8 @@
     <string name="disable_settings_suggestions_title">Disable suggestions</string>
     <string name="disable_settings_suggestions_summary">Disable suggestions on the dashboard</string>
 
+    <!-- About phone screen, processor/RAM info label [CHAR LIMIT=40] -->
+    <string name="processor_info">Processor</string>
+    <string name="mem_info">RAM</string>
+
 </resources>
