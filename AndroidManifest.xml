@@ -3404,6 +3404,7 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".deviceinfo.Changelog" />
+        <!-- This is the longest AndroidManifest.xml ever. -->
     </application>
 </manifest>

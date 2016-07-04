@@ -16,6 +16,9 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- Changelog Colors -->
+    <color name="changelog_title_color">@*android:color/accent_device_default_light</color>
+
     <!-- Color engine -->
     <color name="pixel_primary_color">#000000</color>
     <color name="pixel_secondary_color">#06CAFF</color>
