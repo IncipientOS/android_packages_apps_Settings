@@ -93,6 +93,10 @@
     <string name="recents_clear_all_location_bottom_left">Bottom left</string>
     <string name="recents_clear_all_location_bottom_center">Bottom center</string>
 
+    <!-- Reset battery stats -->
+    <string name="menu_stats_reset">Reset stats</string>
+    <string name="reset_stats_msg">Battery history stats are going to be reset</string>
+
     <!-- Three-finger-swipe to screenshot -->
     <string name="three_finger_gesture">Three finger gesture</string>
     <string name="three_finger_gesture_summary">Swipe three fingers to screenshot</string>
