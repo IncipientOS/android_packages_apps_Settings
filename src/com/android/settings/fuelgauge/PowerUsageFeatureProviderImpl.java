@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017 The Android Open Source Project
- * Copyright (C) 2017 Google Inc.
+ * Copyright (C) 2018 IncipientOS
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,16 +21,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import com.android.settings.fuelgauge.PowerUsageFeatureProvider;
-
 import java.util.List;
 
-public final class PowerUsageFeatureProviderImpl implements PowerUsageFeatureProvider {
+public final class PowerUsageFeatureProviderImpl
+implements PowerUsageFeatureProvider {
     static final String ADDITIONAL_BATTERY_INFO_ACTION = "com.google.android.apps.turbo.SHOW_ADDITIONAL_BATTERY_INFO";
     static final String ADDITIONAL_BATTERY_INFO_PACKAGE = "com.google.android.apps.turbo";
     static final String ADDITIONAL_BATTERY_INFO_ENABLED = "settings:additional_battery_info_enabled";
-
     private Context mContext;
 
     public PowerUsageFeatureProviderImpl(Context context) {
@@ -48,6 +46,8 @@ public final class PowerUsageFeatureProviderImpl implements PowerUsageFeaturePro
      */
     public boolean isAdditionalBatteryInfoEnabled() {
         Intent intent = getAdditionalBatteryInfoIntent();
-        return !mContext.getPackageManager().queryIntentActivities(intent, 0).isEmpty();
+        boolean bl2 = mContext.getPackageManager().queryIntentActivities(intent, 0).isEmpty();
+        if (!bl2) return true;
+        return false;
     }
 }
