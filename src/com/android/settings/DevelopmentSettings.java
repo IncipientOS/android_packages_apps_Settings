@@ -137,8 +137,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private static final String LOCAL_BACKUP_PASSWORD = "local_backup_password";
     private static final String HARDWARE_UI_PROPERTY = "persist.sys.ui.hw";
     private static final String MSAA_PROPERTY = "debug.egl.force_msaa";
-    private static final String BUGREPORT = "bugreport";
-    private static final String BUGREPORT_IN_POWER_KEY = "bugreport_in_power";
     private static final String OPENGL_TRACES_PROPERTY = "debug.egl.trace";
     private static final String TUNER_UI_KEY = "tuner_ui";
     private static final String COLOR_TEMPERATURE_PROPERTY = "persist.sys.debug.color_temp";
@@ -215,8 +213,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private static final String ROOT_APPOPS_KEY = "root_appops";
 
-    private static final String UPDATE_RECOVERY_PROPERTY = "persist.sys.recovery_update";
-
     private static final String IMMEDIATELY_DESTROY_ACTIVITIES_KEY
             = "immediately_destroy_activities";
     private static final String APP_PROCESS_LIMIT_KEY = "app_process_limit";
@@ -234,6 +230,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private static final String OTA_DISABLE_AUTOMATIC_UPDATE_KEY = "ota_disable_automatic_update";
 
     private static final String DEVELOPMENT_TOOLS = "development_tools";
+
+    private static final String FORCE_AUTHORIZE_SUBSTRATUM_PACKAGES = "force_authorize_substratum_packages";
 
     private static final int RESULT_DEBUG_APP = 1000;
     private static final int RESULT_MOCK_LOCATION_APP = 1001;
@@ -261,12 +259,12 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private boolean mHaveDebugSettings;
     private boolean mDontPokeProperties;
 
+    private SwitchPreference mForceAuthorizeSubstratumPackages;
+
     private SwitchPreference mEnableAdb;
     private SwitchPreference mAdbOverNetwork;
     private Preference mClearAdbKeys;
     private SwitchPreference mEnableTerminal;
-    private Preference mBugreport;
-    private SwitchPreference mBugreportInPower;
     private RestrictedSwitchPreference mKeepScreenOn;
     private SwitchPreference mBtHciSnoopLog;
     private RestrictedSwitchPreference mEnableOemUnlock;
@@ -332,8 +330,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
 
     private SwitchPreference mColorTemperaturePreference;
 
-    private SwitchPreference mUpdateRecoveryPreference;
-
     private ListPreference mRootAccess;
     private Object mSelectedRootValue;
     private PreferenceScreen mDevelopmentTools;
@@ -353,7 +349,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private Dialog mAdbKeysDialog;
     private boolean mUnavailable;
     private Dialog mRootDialog;
-    private Dialog mUpdateRecoveryDialog;
 
     private boolean mLogpersistCleared;
     private Dialog mLogpersistClearDialog;
@@ -413,8 +408,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             mEnableTerminal = null;
         }
 
-        mBugreport = findPreference(BUGREPORT);
-        mBugreportInPower = findAndInitSwitchPref(BUGREPORT_IN_POWER_KEY);
         mKeepScreenOn = (RestrictedSwitchPreference) findAndInitSwitchPref(KEEP_SCREEN_ON);
         mBtHciSnoopLog = findAndInitSwitchPref(BT_HCI_SNOOP_LOG);
         mEnableOemUnlock = (RestrictedSwitchPreference) findAndInitSwitchPref(ENABLE_OEM_UNLOCK);
@@ -427,13 +420,14 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         mForceAllowOnExternal = findAndInitSwitchPref(FORCE_ALLOW_ON_EXTERNAL_KEY);
         mPassword = (PreferenceScreen) findPreference(LOCAL_BACKUP_PASSWORD);
         mAllPrefs.add(mPassword);
+        mForceAuthorizeSubstratumPackages = findAndInitSwitchPref(FORCE_AUTHORIZE_SUBSTRATUM_PACKAGES);
 
         if (!mUm.isAdminUser()) {
             disableForUser(mEnableAdb);
             disableForUser(mClearAdbKeys);
             disableForUser(mEnableTerminal);
             disableForUser(mPassword);
-            disableForUser(mUpdateRecoveryPreference);
+            disableForUser(mForceAuthorizeSubstratumPackages);
         }
 
         mDebugAppPref = findPreference(DEBUG_APP_KEY);
@@ -570,16 +564,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             }
             mAllPrefs.add(mRootAccess);
             mAllPrefs.add(mRootAppops);
-        }
-
-        mUpdateRecoveryPreference = findAndInitSwitchPref("update_recovery");
-        if (!getResources().getBoolean(R.bool.config_enableRecoveryUpdater)) {
-            removePreference(mUpdateRecoveryPreference);
-            mUpdateRecoveryPreference = null;
-            if (SystemProperties.getBoolean(UPDATE_RECOVERY_PROPERTY, false)) {
-                SystemProperties.set(UPDATE_RECOVERY_PROPERTY, "false");
-                pokeSystemProperties();
-            }
         }
 
         mDevelopmentTools = (PreferenceScreen) findPreference(DEVELOPMENT_TOOLS);
@@ -757,8 +741,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                     context.getPackageManager().getApplicationEnabledSetting(TERMINAL_APP_PACKAGE)
                             == PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
         }
-        updateSwitchPreference(mBugreportInPower, Settings.Secure.getInt(cr,
-                Settings.Global.BUGREPORT_IN_POWER_MENU, 0) != 0);
         updateSwitchPreference(mKeepScreenOn, Settings.Global.getInt(cr,
                 Settings.Global.STAY_ON_WHILE_PLUGGED_IN, 0) != 0);
         updateSwitchPreference(mBtHciSnoopLog, Settings.Secure.getInt(cr,
@@ -792,7 +774,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         if (mOtaDisableAutomaticUpdate != null) {
             updateOtaDisableAutomaticUpdateOptions();
         }
-        updateBugreportOptions();
         updateForceRtlOptions();
         updateLogdSizeValues();
         updateLogpersistValues();
@@ -813,7 +794,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         updateBluetoothDisableAbsVolumeOptions();
         updateRootAccessOptions();
         updateAdbOverNetwork();
-        updateUpdateRecoveryOptions();
+        updateForceAuthorizeSubstratumPackagesOptions();
     }
 
     private void updateAdbOverNetwork() {
@@ -842,6 +823,17 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         } else {
             mAdbOverNetwork.setSummary(R.string.adb_over_network_summary);
         }
+    }
+
+    private void writeForceAuthorizeSubstratumPackagesOptions() {
+        Settings.Secure.putInt(getActivity().getContentResolver(),
+                Settings.Secure.FORCE_AUTHORIZE_SUBSTRATUM_PACKAGES,
+                mForceAuthorizeSubstratumPackages.isChecked() ? 1 : 0);
+    }
+
+    private void updateForceAuthorizeSubstratumPackagesOptions() {
+        mForceAuthorizeSubstratumPackages.setChecked(Settings.Secure.getInt(getActivity().getContentResolver(),
+                Settings.Secure.FORCE_AUTHORIZE_SUBSTRATUM_PACKAGES, 0) != 0);
     }
 
     private void resetDangerousOptions() {
@@ -1217,22 +1209,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 mEnableOemUnlock.checkRestrictionAndSetDisabled(UserManager.DISALLOW_OEM_UNLOCK);
             }
         }
-    }
-
-    private void updateBugreportOptions() {
-        mBugreport.setEnabled(true);
-        mBugreportInPower.setEnabled(true);
-        setBugreportStorageProviderStatus();
-    }
-
-    private void setBugreportStorageProviderStatus() {
-        final ComponentName componentName = new ComponentName("com.android.shell",
-                "com.android.shell.BugreportStorageProvider");
-        final boolean enabled = mBugreportInPower.isChecked();
-        getPackageManager().setComponentEnabledSetting(componentName,
-                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                        : PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-                0);
     }
 
     // Returns the current state of the system property that controls
@@ -2031,21 +2007,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 .show();
     }
 
-    private void updateUpdateRecoveryOptions() {
-        if (mUpdateRecoveryPreference == null) {
-            return;
-        }
-
-        updateSwitchPreference(mUpdateRecoveryPreference,
-                SystemProperties.getBoolean(UPDATE_RECOVERY_PROPERTY, false));
-    }
-
-    private void writeUpdateRecoveryOptions() {
-        SystemProperties.set(UPDATE_RECOVERY_PROPERTY,
-                mUpdateRecoveryPreference.isChecked() ? "true" : "false");
-        pokeSystemProperties();
-    }
-
     @Override
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         if (switchView != mSwitchBar.getSwitch()) {
@@ -2140,7 +2101,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                         Settings.Global.ADB_ENABLED, 0);
                 mVerifyAppsOverUsb.setEnabled(false);
                 mVerifyAppsOverUsb.setChecked(false);
-                updateBugreportOptions();
             }
         } else if (preference == mAdbOverNetwork) {
             if (mAdbOverNetwork.isChecked()) {
@@ -2171,11 +2131,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             pm.setApplicationEnabledSetting(TERMINAL_APP_PACKAGE,
                     mEnableTerminal.isChecked() ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
                             : PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, 0);
-        } else if (preference == mBugreportInPower) {
-            Settings.Secure.putInt(getActivity().getContentResolver(),
-                    Settings.Global.BUGREPORT_IN_POWER_MENU,
-                    mBugreportInPower.isChecked() ? 1 : 0);
-            setBugreportStorageProviderStatus();
         } else if (preference == mKeepScreenOn) {
             Settings.Global.putInt(getActivity().getContentResolver(),
                     Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
@@ -2256,6 +2211,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeUSBAudioOptions();
         } else if (preference == mForceResizable) {
             writeForceResizableOptions();
+        } else if (preference == mForceAuthorizeSubstratumPackages) {
+            writeForceAuthorizeSubstratumPackagesOptions();
         } else if (INACTIVE_APPS_KEY.equals(preference.getKey())) {
             startInactiveAppsFragment();
         } else if (BACKGROUND_CHECK_KEY.equals(preference.getKey())) {
@@ -2266,28 +2223,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             writeWebViewMultiprocessOptions();
         } else if (SHORTCUT_MANAGER_RESET_KEY.equals(preference.getKey())) {
             resetShortcutManagerThrottling();
-        } else if (preference == mUpdateRecoveryPreference) {
-            if (mSwitchBar.isChecked()) {
-                if (mUpdateRecoveryDialog != null) {
-                    dismissDialogs();
-                }
-                if (mUpdateRecoveryPreference.isChecked()) {
-                    mUpdateRecoveryDialog = new AlertDialog.Builder(getActivity()).setMessage(
-                            getResources().getString(R.string.update_recovery_on_warning))
-                            .setTitle(R.string.update_recovery_title)
-                            .setPositiveButton(android.R.string.yes, this)
-                            .setNegativeButton(android.R.string.no, this)
-                            .show();
-                } else {
-                    mUpdateRecoveryDialog = new AlertDialog.Builder(getActivity()).setMessage(
-                            getResources().getString(R.string.update_recovery_off_warning))
-                            .setTitle(R.string.update_recovery_title)
-                            .setPositiveButton(android.R.string.yes, this)
-                            .setNegativeButton(android.R.string.no, this)
-                            .show();
-                }
-                mUpdateRecoveryDialog.setOnDismissListener(this);
-            }
         } else {
             return super.onPreferenceTreeClick(preference);
         }
@@ -2417,10 +2352,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             mAdbTcpDialog.dismiss();
             mAdbTcpDialog = null;
         }
-        if (mUpdateRecoveryDialog != null) {
-            mUpdateRecoveryDialog.dismiss();
-            mUpdateRecoveryDialog = null;
-        }
     }
 
     public void onClick(DialogInterface dialog, int which) {
@@ -2431,7 +2362,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                         Settings.Global.ADB_ENABLED, 1);
                 mVerifyAppsOverUsb.setEnabled(true);
                 updateVerifyAppsOverUsbOptions();
-                updateBugreportOptions();
             } else {
                 // Reset the toggle
                 mEnableAdb.setChecked(false);
@@ -2482,10 +2412,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
                 CMSettings.Secure.putInt(getActivity().getContentResolver(),
                         CMSettings.Secure.ADB_PORT, 5555);
             }
-        } else if (dialog == mUpdateRecoveryDialog) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                writeUpdateRecoveryOptions();
-            }
         }
     }
 
@@ -2509,9 +2435,6 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         } else if (dialog == mAdbTcpDialog) {
             updateAdbOverNetwork();
             mAdbTcpDialog = null;
-        } else if (dialog == mUpdateRecoveryDialog) {
-            updateUpdateRecoveryOptions();
-            mUpdateRecoveryDialog = null;
         }
     }
 

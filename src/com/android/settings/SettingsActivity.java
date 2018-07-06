@@ -20,6 +20,9 @@ import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+
+import android.app.IThemeCallback;
+import android.app.ThemeManager;
 import android.content.ActivityNotFoundException;
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
@@ -36,8 +39,11 @@ import android.content.res.Configuration;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.provider.Settings.Secure;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
@@ -62,6 +68,11 @@ import com.android.settings.accounts.AccountSettings;
 import com.android.settings.accounts.AccountSyncSettings;
 import com.android.settings.accounts.ChooseAccountActivity;
 import com.android.settings.accounts.ManagedProfileSettings;
+import com.android.settings.aicp.MiscSettings;
+import com.android.settings.aicp.FlingSettings;
+import com.android.settings.aicp.NavbarSettings;
+import com.android.settings.aicp.SmartbarSettings;
+import com.android.settings.aicp.PulseSettings;
 import com.android.settings.applications.AdvancedAppSettings;
 import com.android.settings.applications.DrawOverlayDetails;
 import com.android.settings.applications.InstalledAppDetails;
@@ -235,6 +246,12 @@ public class SettingsActivity extends SettingsDrawerActivity
 
     private static final String ACTION_TIMER_SWITCH = "qualcomm.intent.action.TIMER_SWITCH";
 
+    private static final String MAGISK_FRAGMENT = "com.android.settings.MagiskManager";
+
+    private static final String SUPERSU_FRAGMENT = "com.android.settings.SuperSU";
+
+    private static final String SUBSTRATUM_FRAGMENT = "com.android.settings.Substratum";
+
     private String mFragmentClass;
     private String mActivityAction;
 
@@ -369,7 +386,12 @@ public class SettingsActivity extends SettingsDrawerActivity
             MasterClear.class.getName(),
             NightDisplaySettings.class.getName(),
             ManageDomainUrls.class.getName(),
-            AutomaticStorageManagerSettings.class.getName()
+            AutomaticStorageManagerSettings.class.getName(),
+            MiscSettings.class.getName(),
+            NavbarSettings.class.getName(),
+            FlingSettings.class.getName(),
+            SmartbarSettings.class.getName(),
+            PulseSettings.class.getName()
     };
 
 
@@ -393,6 +415,25 @@ public class SettingsActivity extends SettingsDrawerActivity
                     updateTilesList();
                 }
             }
+        }
+    };
+
+    private int mTheme;
+
+    private ThemeManager mThemeManager;
+    private final IThemeCallback mThemeCallback = new IThemeCallback.Stub() {
+
+        @Override
+        public void onThemeChanged(int themeMode, int color) {
+            onCallbackAdded(themeMode, color);
+            SettingsActivity.this.runOnUiThread(() -> {
+                SettingsActivity.this.recreate();
+            });
+        }
+
+        @Override
+        public void onCallbackAdded(int themeMode, int color) {
+            mTheme = color;
         }
     };
 
@@ -533,13 +574,49 @@ public class SettingsActivity extends SettingsDrawerActivity
 
     @Override
     protected void onCreate(Bundle savedState) {
-        super.onCreate(savedState);
-        long startTime = System.currentTimeMillis();
 
         // Should happen before any call to getIntent()
         getMetaData();
-
         final Intent intent = getIntent();
+
+        // This is a "Sub Settings" when:
+        // - this is a real SubSettings
+        // - or :settings:show_fragment_as_subsetting is passed to the Intent
+        final boolean isSubSettings = this instanceof SubSettings ||
+                intent.getBooleanExtra(EXTRA_SHOW_FRAGMENT_AS_SUBSETTING, false);
+
+        boolean themeSet = false;
+        // If this is a sub settings, then apply the SubSettings Theme for the ActionBar content insets
+        if (isSubSettings) {
+            // Check also that we are not a Theme Dialog as we don't want to override them
+            final int themeResId = getThemeResId();
+            if (themeResId != R.style.Theme_DialogWhenLarge &&
+                    themeResId != R.style.Theme_SubSettingsDialogWhenLarge) {
+                setTheme(R.style.Theme_SubSettings);
+                themeSet = true;
+            }
+        }
+
+        final int themeMode = Secure.getInt(getContentResolver(),
+                Secure.THEME_PRIMARY_COLOR, 0);
+        final int accentColor = Secure.getInt(getContentResolver(),
+                Secure.THEME_ACCENT_COLOR, 0);
+        mThemeManager = (ThemeManager) getSystemService(Context.THEME_SERVICE);
+        if (mThemeManager != null) {
+            mThemeManager.addCallback(mThemeCallback);
+        }
+        if (themeMode != 0 || accentColor != 0) {
+            if (!themeSet) {
+                setTheme(R.style.Theme_Settings);
+            }
+            getTheme().applyStyle(mTheme, true);
+        }
+        if (themeMode == 2) {
+            getTheme().applyStyle(R.style.settings_pixel_theme, true);
+        }
+        super.onCreate(savedState);
+        long startTime = System.currentTimeMillis();
+
         if (intent.hasExtra(EXTRA_LAUNCH_ACTIVITY_ACTION)) {
             if (mActivityAction != null) {
                try{
@@ -577,21 +654,6 @@ public class SettingsActivity extends SettingsDrawerActivity
                 || className.equals(Settings.PersonalSettings.class.getName())
                 || className.equals(Settings.WirelessSettings.class.getName());
 
-        // This is a "Sub Settings" when:
-        // - this is a real SubSettings
-        // - or :settings:show_fragment_as_subsetting is passed to the Intent
-        final boolean isSubSettings = this instanceof SubSettings ||
-                intent.getBooleanExtra(EXTRA_SHOW_FRAGMENT_AS_SUBSETTING, false);
-
-        // If this is a sub settings, then apply the SubSettings Theme for the ActionBar content insets
-        if (isSubSettings) {
-            // Check also that we are not a Theme Dialog as we don't want to override them
-            final int themeResId = getThemeResId();
-            if (themeResId != R.style.Theme_DialogWhenLarge &&
-                    themeResId != R.style.Theme_SubSettingsDialogWhenLarge) {
-                setTheme(R.style.Theme_SubSettings);
-            }
-        }
 
         setContentView(mIsShowingDashboard ?
                 R.layout.settings_main_dashboard : R.layout.settings_main_prefs);
@@ -1044,6 +1106,26 @@ public class SettingsActivity extends SettingsDrawerActivity
      */
     private Fragment switchToFragment(String fragmentName, Bundle args, boolean validate,
             boolean addToBackStack, int titleResId, CharSequence title, boolean withTransition) {
+        if (MAGISK_FRAGMENT.equals(fragmentName)) {
+            Intent magiskIntent = new Intent();
+            magiskIntent.setClassName("com.topjohnwu.magisk", "com.topjohnwu.magisk.SplashActivity");
+            startActivity(magiskIntent);
+            finish();
+            return null;
+        } else if (SUPERSU_FRAGMENT.equals(fragmentName)) {
+            Intent superSUIntent = new Intent();
+            superSUIntent.setClassName("eu.chainfire.supersu", "eu.chainfire.supersu.MainActivity");
+            startActivity(superSUIntent);
+            finish();
+            return null;
+        } else if (SUBSTRATUM_FRAGMENT.equals(fragmentName)) {
+            Intent subIntent = new Intent();
+            subIntent.setClassName("projekt.substratum", "projekt.substratum.LaunchActivity");
+            startActivity(subIntent);
+            finish();
+            return null;
+        }
+
         if (validate && !isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: "
                     + fragmentName);
@@ -1130,15 +1212,43 @@ public class SettingsActivity extends SettingsDrawerActivity
                 Settings.PrintSettingsActivity.class.getName()),
                 pm.hasSystemFeature(PackageManager.FEATURE_PRINTING), isAdmin, pm);
 
-        final boolean showDev = mDevelopmentPreferences.getBoolean(
-                    DevelopmentSettings.PREF_SHOW, android.os.Build.TYPE.equals("eng"))
-                && !um.hasUserRestriction(UserManager.DISALLOW_DEBUGGING_FEATURES);
+        final boolean showDev = !um.hasUserRestriction(UserManager.DISALLOW_DEBUGGING_FEATURES);
         setTileEnabled(new ComponentName(packageName,
                         Settings.DevelopmentSettingsActivity.class.getName()),
                 showDev, isAdmin, pm);
 
+        // SuperSU
+        boolean suSupported = false;
+        try {
+            suSupported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.SuperSUActivity.class.getName()),
+                suSupported, isAdmin, pm);
+
         // Reveal development-only quick settings tiles
         DevelopmentTiles.setTilesEnabled(this, showDev);
+
+        // Substratum
+        boolean subSupported = false;
+        try {
+            subSupported = (getPackageManager().getPackageInfo("projekt.substratum", 0).versionCode > 0);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.SubstratumActivity.class.getName()),
+                subSupported, isAdmin, pm);
+
+        // Magisk Manager
+        boolean magiskSupported = false;
+        try {
+            magiskSupported = (getPackageManager().getPackageInfo("com.topjohnwu.magisk", 0).versionCode > 0);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        setTileEnabled(new ComponentName(packageName,
+                        Settings.MagiskActivity.class.getName()),
+                magiskSupported, isAdmin, pm);
 
         // Show scheduled power on and off if support
         boolean showTimerSwitch = false;
