@@ -69,6 +69,11 @@
     <!-- Personalization -->
     <string name="header_category_personalization">Personalization</string>
 
+    <!-- Recents Membar -->
+    <string name="systemui_recents_mem_display_title">Show Memory Bar</string>
+    <string name="systemui_recents_mem_display_summaryOn">RAM bar enabled</string>
+    <string name="systemui_recents_mem_display_summaryOff">RAM bar disabled</string>
+
     <!-- Recents panel settings -->
     <string name="recents_panel_title">Recents panel</string>
     <string name="show_clear_all_recents_button_title">Enable clear all button</string>
