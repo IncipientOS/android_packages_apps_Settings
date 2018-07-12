@@ -63,6 +63,10 @@
     <string name="recents_use_grid_title">Enable grid recents</string>
     <string name="recents_use_grid_summary">Show grid style using AOSP recents</string>
 
+    <!-- Lockscreen battery info -->
+    <string name="lockscreen_battery_info_title">Battery info</string>
+    <string name="lockscreen_battery_info_summary">Display battery info when charging</string>
+
     <!-- Miscellaneous -->
     <string name="miscellaneous_category">Miscellaneous</string>
 
