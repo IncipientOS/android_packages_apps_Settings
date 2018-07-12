@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2016 AICP
+     Copyright (C) 2018 IncipientOS
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,17 +15,6 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="magisk_title">Magisk Manager</string>
-    <string name="magisk_summary">Root management</string>
-
-     <!-- Top Level SuperSU settings -->
-    <string name="supersu_title">SuperSU</string>
-    <string name="supersu_summary">Root management</string>
-
-    <!-- Top Level Substratum settings -->
-    <string name="substratum_title">Substratum</string>
-    <string name="substratum_summary">Customize device theme</string>
-
     <!-- Color engine -->
     <string name="theme_switch_palette">Switch between primary and accent colors</string>
     <string name="theme_title">Color engine</string>
@@ -48,6 +37,12 @@
     <string name="grey">Grey</string>
     <string name="default_string">Default</string>
 
+    <!-- Miscellaneous -->
+    <string name="miscellaneous_category">Miscellaneous</string>
+
+    <!-- Personalization -->
+    <string name="header_category_personalization">Personalization</string>
+
     <!-- Recents panel settings -->
     <string name="recents_panel_title">Recents panel</string>
     <string name="show_clear_all_recents_button_title">Enable clear all button</string>
@@ -59,5 +54,21 @@
     <string name="recents_clear_all_location_bottom_right">Bottom right</string>
     <string name="recents_clear_all_location_bottom_left">Bottom left</string>
     <string name="recents_clear_all_location_bottom_center">Bottom center</string>
+
+    <!-- Three-finger-swipe to screenshot -->
+    <string name="three_finger_gesture">Three finger gesture</string>
+    <string name="three_finger_gesture_summary">Swipe three fingers to screenshot</string>
+
+    <!-- Top Level Magisk settings -->
+    <string name="magisk_title">Magisk Manager</string>
+    <string name="magisk_summary">Root management</string>
+
+    <!-- Top Level Substratum settings -->
+    <string name="substratum_title">Substratum</string>
+    <string name="substratum_summary">Customize device theme</string>
+
+    <!-- Top Level SuperSU settings -->
+    <string name="supersu_title">SuperSU</string>
+    <string name="supersu_summary">Root management</string>
 
 </resources>
