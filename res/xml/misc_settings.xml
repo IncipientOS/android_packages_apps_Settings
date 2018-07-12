@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2012-2014 The TeamEos Project
+     Copyright (C) 2018 IncipientOS
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -35,7 +35,12 @@
             android:entryValues="@array/recents_clear_all_location_values"
             android:defaultValue="3"
             android:dependency="show_clear_all_recents" />
-
     </PreferenceCategory>
+
+    <!--Battery bar customization -->
+    <Preference
+        android:key="batterybar"
+        android:title="@string/battery_bar_title"
+        android:fragment="com.android.settings.inos.BatteryBar" />
 
 </PreferenceScreen>
