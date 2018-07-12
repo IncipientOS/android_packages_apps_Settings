@@ -59,6 +59,10 @@
     <string name="grey">Grey</string>
     <string name="default_string">Default</string>
 
+    <!-- Grid-Style recents -->
+    <string name="recents_use_grid_title">Enable grid recents</string>
+    <string name="recents_use_grid_summary">Show grid style using AOSP recents</string>
+
     <!-- Miscellaneous -->
     <string name="miscellaneous_category">Miscellaneous</string>
 
