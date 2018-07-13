@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Benzo Rom
+ * Copyright (C) 2018 IncipientOS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
-import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.internal.logging.MetricsProto.MetricsEvent;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -100,6 +100,6 @@ public class Changelog extends SettingsPreferenceFragment {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.BENZO;
+        return MetricsEvent.APPLICATION;
     }
 }
