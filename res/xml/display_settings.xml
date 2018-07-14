@@ -20,16 +20,6 @@
         android:title="@string/display_settings"
         settings:keywords="@string/keywords_display">
 
-    <!-- ColorPicker -->
-    <PreferenceCategory
-            android:title="@string/theme_title">
-
-        <com.android.settings.display.ThemePreference
-                android:key="theme"
-                android:title="@string/theme" />
-    </PreferenceCategory>
-
-    <!-- Screen settings -->
     <PreferenceCategory
             android:key="display"
             android:title="@string/display_label">
@@ -47,17 +37,17 @@
                 settings:keywords="@string/keywords_display_auto_brightness"
                 android:summary="@string/auto_brightness_summary" />
 
-        <!-- Lockscreen Battery Info -->
-        <cyanogenmod.preference.CMSystemSettingSwitchPreference
-		android:key="lockscreen_battery_info"
-        	android:title="@string/lockscreen_battery_info_title"
-        	android:summary="@string/lockscreen_battery_info_summary"
-        	android:defaultValue="false" />
-
         <!-- LiveDisplay -->
         <org.cyanogenmod.internal.cmparts.CMPartsPreference
             android:key="livedisplay"
             cm:requiresFeature="org.cyanogenmod.livedisplay" />
+
+        <!-- Lockscreen Battery Info -->
+	<com.android.settings.preference.SystemSettingSwitchPreference
+		android:key="lockscreen_battery_info"
+        	android:title="@string/lockscreen_battery_info_title"
+        	android:summary="@string/lockscreen_battery_info_summary"
+        	android:defaultValue="false" />
 
         <!-- Rotation -->
         <org.cyanogenmod.internal.cmparts.CMPartsPreference
@@ -183,4 +173,11 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+            android:title="@string/theme_title">
+
+        <com.android.settings.display.ThemePreference
+                android:key="theme"
+                android:title="@string/theme" />
+    </PreferenceCategory>
 </PreferenceScreen>

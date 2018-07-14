@@ -50,8 +50,7 @@
             android:dependency="show_clear_all_recents" />
     </PreferenceCategory>
 
-    <!--Battery bar customization -->
-    <Preference
+    <PreferenceScreen
         android:key="batterybar"
         android:title="@string/battery_bar_title"
         android:fragment="com.android.settings.inos.BatteryBar" />
