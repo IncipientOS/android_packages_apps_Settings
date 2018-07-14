@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2012-2014 The TeamEos Project
+     Copyright (C) 2018 IncipientOS
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -23,6 +23,19 @@
         android:title="@string/recents_panel_title" >
 
         <com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="recents_use_grid"
+            android:title="@string/recents_use_grid_title"
+            android:summary="@string/recents_use_grid_summary"
+            android:defaultValue="false" />
+
+        <com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="systemui_recents_mem_display"
+            android:title="@string/systemui_recents_mem_display_title"
+            android:summaryOn="@string/systemui_recents_mem_display_summaryOn"
+            android:summaryOff="@string/systemui_recents_mem_display_summaryOff"
+            android:defaultValue="false" />
+
+        <com.android.settings.preference.SystemSettingSwitchPreference
             android:key="show_clear_all_recents"
             android:title="@string/show_clear_all_recents_button_title"
             android:summary="@string/show_clear_all_recents_button_summary"
@@ -35,7 +48,11 @@
             android:entryValues="@array/recents_clear_all_location_values"
             android:defaultValue="3"
             android:dependency="show_clear_all_recents" />
-
     </PreferenceCategory>
+
+    <PreferenceScreen
+        android:key="batterybar"
+        android:title="@string/battery_bar_title"
+        android:fragment="com.android.settings.inos.BatteryBar" />
 
 </PreferenceScreen>

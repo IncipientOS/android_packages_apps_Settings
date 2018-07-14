@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
-     Copyright (C) 2017 Altair ROM
+     Copyright (C) 2018 IncipientOS
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,10 +15,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Personalization -->
-    <string name="header_category_personalization">Personalization</string>
+<resources>
 
-    <!-- Miscellaneous -->
-    <string name="miscellaneous_category">Miscellaneous</string>
+    <!-- Color engine -->
+    <dimen name="theme_preview_actionbar_size">15dp</dimen>
+    <dimen name="theme_color_margin_side">20dp</dimen>
+
 </resources>

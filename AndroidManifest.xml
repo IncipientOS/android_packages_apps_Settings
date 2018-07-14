@@ -50,6 +50,7 @@
     <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"/>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.BATTERY_STATS"/>
+    <uses-permission android:name="android.permission.RESET_BATTERY_STATS"/>
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MOVE_PACKAGE" />
@@ -1993,6 +1994,12 @@
                 android:exported="true"
                 android:permission="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+        <receiver android:name=".deviceinfo.UsbModeChooserReceiver">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_STATE"/>
+            </intent-filter>
+        </receiver>>
+
         <activity android:name="Settings$ApnEditorActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/apn_edit">
@@ -3397,6 +3404,7 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".deviceinfo.Changelog" />
+        <!-- This is the longest AndroidManifest.xml ever. -->
     </application>
 </manifest>

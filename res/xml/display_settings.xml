@@ -42,6 +42,13 @@
             android:key="livedisplay"
             cm:requiresFeature="org.cyanogenmod.livedisplay" />
 
+        <!-- Lockscreen Battery Info -->
+	<com.android.settings.preference.SystemSettingSwitchPreference
+		android:key="lockscreen_battery_info"
+        	android:title="@string/lockscreen_battery_info_title"
+        	android:summary="@string/lockscreen_battery_info_summary"
+        	android:defaultValue="false" />
+
         <!-- Rotation -->
         <org.cyanogenmod.internal.cmparts.CMPartsPreference
             android:key="rotation"

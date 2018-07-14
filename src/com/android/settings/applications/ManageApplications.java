@@ -94,7 +94,8 @@ import java.util.Locale;
  * intent.
  */
 public class ManageApplications extends InstrumentedFragment
-        implements OnItemClickListener, OnItemSelectedListener {
+        implements OnItemClickListener, OnItemSelectedListener,
+        ResetAppsHelper.ResetCompletedCallback {
 
     static final String TAG = "ManageApplications";
     static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
@@ -295,7 +296,7 @@ public class ManageApplications extends InstrumentedFragment
 
         mInvalidSizeStr = getActivity().getText(R.string.invalid_size_value);
 
-        mResetAppsHelper = new ResetAppsHelper(getActivity());
+        mResetAppsHelper = new ResetAppsHelper(getActivity(), this);
     }
 
 
@@ -320,6 +321,7 @@ public class ManageApplications extends InstrumentedFragment
             lv.setSaveEnabled(true);
             lv.setItemsCanFocus(true);
             lv.setTextFilterEnabled(true);
+            lv.setFastScrollEnabled(true);
             mListView = lv;
             mApplications = new ApplicationsAdapter(mApplicationsState, this, mFilter);
             if (savedInstanceState != null) {
@@ -696,6 +698,10 @@ public class ManageApplications extends InstrumentedFragment
             }
         }
         return false;
+}
+    @Override
+    public void onResetCompleted() {
+        mApplications.mExtraInfoBridge.onPackageListChanged();
     }
 
     static class FilterSpinnerAdapter extends ArrayAdapter<CharSequence> {
