@@ -20,6 +20,7 @@ package com.android.settings.aicp;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.os.SystemProperties;
 import android.support.v7.preference.ListPreference;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
@@ -34,9 +35,13 @@ import com.android.settings.R;
 public class MiscSettings extends SettingsPreferenceFragment implements OnPreferenceChangeListener {
 
     private static final String RECENTS_CLEAR_ALL_LOCATION = "recents_clear_all_location";
+    private static final String SCROLLINGCACHE_PREF = "pref_scrollingcache";
+    private static final String SCROLLINGCACHE_PERSIST_PROP = "persist.sys.scrollingcache";
+    private static final String SCROLLINGCACHE_DEFAULT = "1";
 
     private SwitchPreference mRecentsClearAll;
     private ListPreference mRecentsClearAllLocation;
+    private ListPreference mScrollingCachePref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,13 @@ public class MiscSettings extends SettingsPreferenceFragment implements OnPrefer
         mRecentsClearAllLocation.setValue(String.valueOf(location));
         mRecentsClearAllLocation.setSummary(mRecentsClearAllLocation.getEntry());
         mRecentsClearAllLocation.setOnPreferenceChangeListener(this);
+
+        // Scrolling cache
+        mScrollingCachePref = (ListPreference) findPreference(SCROLLINGCACHE_PREF);
+        mScrollingCachePref.setValue(SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP,
+                SystemProperties.get(SCROLLINGCACHE_PERSIST_PROP, SCROLLINGCACHE_DEFAULT)));
+        mScrollingCachePref.setSummary(mScrollingCachePref.getEntry());
+        mScrollingCachePref.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -60,6 +72,16 @@ public class MiscSettings extends SettingsPreferenceFragment implements OnPrefer
             Settings.System.putIntForUser(getContentResolver(),
                     Settings.System.RECENTS_CLEAR_ALL_LOCATION, location, UserHandle.USER_CURRENT);
             mRecentsClearAllLocation.setSummary(mRecentsClearAllLocation.getEntries()[index]);
+            return true;
+        } else if (preference == mScrollingCachePref) {
+            if (newValue != null) {
+            String ScrollingCache = (String) newValue;
+            SystemProperties.set(SCROLLINGCACHE_PERSIST_PROP, ScrollingCache);
+            int ScrollingCacheIndex = mScrollingCachePref
+                    .findIndexOfValue(ScrollingCache);
+            mScrollingCachePref
+                    .setSummary(mScrollingCachePref.getEntries()[ScrollingCacheIndex]);
+            }
             return true;
         }
         return false;
