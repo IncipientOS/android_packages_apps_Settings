@@ -122,4 +122,8 @@
     <string name="supersu_title">SuperSU</string>
     <string name="supersu_summary">Root management</string>
 
+    <!-- Settings suggestions  -->
+    <string name="disable_settings_suggestions_title">Disable suggestions</string>
+    <string name="disable_settings_suggestions_summary">Disable suggestions on the dashboard</string>
+
 </resources>
