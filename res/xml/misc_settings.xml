@@ -53,6 +53,11 @@
         android:entryValues="@array/values_scrollingcache" />
 
     <PreferenceScreen
+        android:key="system_animation"
+        android:title="@string/system_animation_title"
+        android:fragment="com.crdroid.settings.fragments.AnimationControls" />
+
+    <PreferenceScreen
         android:key="batterybar"
         android:title="@string/battery_bar_title"
         android:fragment="com.android.settings.inos.BatteryBar" />
