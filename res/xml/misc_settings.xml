@@ -64,7 +64,7 @@
     <PreferenceScreen
         android:key="system_animation"
         android:title="@string/system_animation_title"
-        android:fragment="com.crdroid.settings.fragments.AnimationControls" />
+        android:fragment="com.android.settings.fragments.AnimationControls" />
 
     <PreferenceScreen
         android:key="batterybar"
