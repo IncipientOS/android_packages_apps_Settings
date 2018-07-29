@@ -47,14 +47,14 @@
             android:key="disable_settings_suggestions"
             android:title="@string/disable_settings_suggestions_title"
 	    android:summary="@string/disable_settings_suggestions_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <!-- Lockscreen Battery Info -->
 	<com.android.settings.preference.SystemSettingSwitchPreference
 	    android:key="lockscreen_battery_info"
             android:title="@string/lockscreen_battery_info_title"
             android:summary="@string/lockscreen_battery_info_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <!-- Rotation -->
         <org.cyanogenmod.internal.cmparts.CMPartsPreference
