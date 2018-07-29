@@ -42,6 +42,18 @@
             android:key="livedisplay"
             cm:requiresFeature="org.cyanogenmod.livedisplay" />
 
+        <!-- Custom System Animations -->
+        <PreferenceScreen
+            android:key="system_animation"
+            android:title="@string/system_animation_title"
+            android:fragment="com.android.settings.fragments.AnimationControls" />
+
+        <!-- BatteryBar -->
+        <PreferenceScreen
+            android:key="batterybar"
+            android:title="@string/battery_bar_title"
+            android:fragment="com.android.settings.inos.BatteryBar" />
+
         <!-- Disable Suggestions -->
 	<com.android.settings.preference.SystemSettingSwitchPreference
             android:key="disable_settings_suggestions"
