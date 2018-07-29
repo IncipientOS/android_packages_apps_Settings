@@ -18,6 +18,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
 
+    <com.android.settings.preference.SystemSettingSwitchPreference
+        android:key="use_slim_recents"
+        android:title="@string/use_slim_recents_title"
+        android:summary="@string/use_slim_recents_summary"
+        android:defaultValue="false" />
+
+    <PreferenceScreen
+        android:key="slim_recent_panel"
+        android:title="@string/slim_recents_settings_title"
+        android:summary="@string/slim_recents_settings_summary"
+        android:fragment="com.android.settings.fragments.SlimRecentPanel"
+        android:dependency="use_slim_recents"
+        android:persistent="false" />
+
     <PreferenceScreen
         android:key="omniswitch"
         android:id="@+id/omniswitch"
