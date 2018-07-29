@@ -18,6 +18,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
 
+    <PreferenceScreen
+        android:key="omniswitch"
+        android:id="@+id/omniswitch"
+        android:title="@string/omniswitch_settings_title"
+        android:fragment="com.android.settings.fragments.OmniSwitch" />
+
     <ListPreference
         android:key="immersive_recents"
         android:title="@string/immersive_recents_title"
