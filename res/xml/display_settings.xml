@@ -42,19 +42,31 @@
             android:key="livedisplay"
             cm:requiresFeature="org.cyanogenmod.livedisplay" />
 
+        <!-- Custom System Animations -->
+        <PreferenceScreen
+            android:key="system_animation"
+            android:title="@string/system_animation_title"
+            android:fragment="com.android.settings.fragments.AnimationControls" />
+
+        <!-- BatteryBar -->
+        <PreferenceScreen
+            android:key="batterybar"
+            android:title="@string/battery_bar_title"
+            android:fragment="com.android.settings.inos.BatteryBar" />
+
         <!-- Disable Suggestions -->
 	<com.android.settings.preference.SystemSettingSwitchPreference
             android:key="disable_settings_suggestions"
             android:title="@string/disable_settings_suggestions_title"
 	    android:summary="@string/disable_settings_suggestions_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <!-- Lockscreen Battery Info -->
 	<com.android.settings.preference.SystemSettingSwitchPreference
 	    android:key="lockscreen_battery_info"
             android:title="@string/lockscreen_battery_info_title"
             android:summary="@string/lockscreen_battery_info_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <!-- Rotation -->
         <org.cyanogenmod.internal.cmparts.CMPartsPreference
