@@ -232,4 +232,8 @@
     <string name="listview_overshoot_interpolator">Overshoot</string>
     <string name="listview_anticipate_overshoot_interpolator">Anticipate and overshoot</string>
     <string name="listview_bounce_interpolator">Bounce</string>
+
+    <!-- Screenshot Sound  -->
+    <string name="screenshot_sound_title">Enable screenshot sound</string>
+    <string name="screenshot_sound_summary">Option to enable or disable the screenshot sound</string>
 </resources>

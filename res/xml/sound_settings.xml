@@ -66,7 +66,6 @@
                 android:key="vibrate_when_ringing"
                 android:title="@string/vibrate_when_ringing_title" />
 
-
         <!-- Interruptions -->
         <com.android.settingslib.RestrictedPreference
                 android:key="zen_mode"
@@ -102,6 +101,13 @@
                 android:key="headset_connect_player"
                 android:title="@string/headset_connect_player_title"
                 android:summary="@string/headset_connect_player_summary" />
+
+        <!-- Screenshot sound -->
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+        	android:key="screenshot_sound"
+        	android:title="@string/screenshot_sound_title"
+        	android:summary="@string/screenshot_sound_summary"
+        	android:defaultValue="true" />
 
         <!-- Other sounds -->
         <Preference
