@@ -61,6 +61,25 @@
                 android:title="@string/disable_immersive_message_title"
                 android:summary="@string/disable_immersive_message_summary" />
 
+        <!-- Hide Lockscreen Clock/Date/Alarm -->
+	<com.android.settings.preference.SystemSettingSwitchPreference
+                android:key="hide_lockscreen_clock"
+                android:title="@string/hide_lockscreen_clock_title"
+                android:summary="@string/hide_lockscreen_clock_summary"
+                android:defaultValue="true" />
+
+	<com.android.settings.preference.SystemSettingSwitchPreference
+                android:key="hide_lockscreen_date"
+                android:title="@string/hide_lockscreen_date_title"
+                android:summary="@string/hide_lockscreen_date_summary"
+                android:defaultValue="true" />
+
+	<com.android.settings.preference.SystemSettingSwitchPreference
+                android:key="hide_lockscreen_alarm"
+                android:title="@string/hide_lockscreen_alarm_title"
+                android:summary="@string/hide_lockscreen_alarm_summary"
+                android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

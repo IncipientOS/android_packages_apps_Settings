@@ -264,4 +264,12 @@
     <!-- Disabling immersive mode messages -->
     <string name="disable_immersive_message_title">Disable immersive mode messages</string>
     <string name="disable_immersive_message_summary">Hide all messages shown in immersive mode</string>
+
+    <!-- Hide Lockscreen clock, date & alarm -->
+    <string name="hide_lockscreen_clock_title">Clock</string>
+    <string name="hide_lockscreen_clock_summary">Display current time</string>
+    <string name="hide_lockscreen_date_title">Date</string>
+    <string name="hide_lockscreen_date_summary">Display today\'s date</string>
+    <string name="hide_lockscreen_alarm_title">Alarm</string>
+    <string name="hide_lockscreen_alarm_summary">Display alarm when set</string>
 </resources>
