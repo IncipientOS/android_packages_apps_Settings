@@ -49,6 +49,12 @@
                 android:summary="@string/lockscreen_battery_info_summary"
                 android:defaultValue="false" />
 
+        <!-- Force Expanded Notifications -->
+	<com.android.settings.preference.SystemSettingSwitchPreference
+                android:key="force_expanded_notifications"
+                android:title="@string/force_expanded_notifications_title"
+                android:summary="@string/force_expanded_notifications_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
