@@ -18,67 +18,101 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" >
 
-    <com.android.settings.preference.SystemSettingSwitchPreference
-        android:key="use_slim_recents"
-        android:title="@string/use_slim_recents_title"
-        android:summary="@string/use_slim_recents_summary"
-        android:defaultValue="false" />
+    <PreferenceCategory
+        android:title="@string/recents_title">
 
-    <PreferenceScreen
-        android:key="slim_recent_panel"
-        android:title="@string/slim_recents_settings_title"
-        android:summary="@string/slim_recents_settings_summary"
-        android:fragment="com.android.settings.fragments.SlimRecentPanel"
-        android:dependency="use_slim_recents"
-        android:persistent="false" />
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="use_slim_recents"
+            android:title="@string/use_slim_recents_title"
+            android:summary="@string/use_slim_recents_summary"
+            android:defaultValue="false" />
 
-    <PreferenceScreen
-        android:key="omniswitch"
-        android:id="@+id/omniswitch"
-        android:title="@string/omniswitch_settings_title"
-        android:fragment="com.android.settings.fragments.OmniSwitch" />
+    	<PreferenceScreen
+            android:key="slim_recent_panel"
+            android:title="@string/slim_recents_settings_title"
+            android:summary="@string/slim_recents_settings_summary"
+            android:fragment="com.android.settings.fragments.SlimRecentPanel"
+            android:dependency="use_slim_recents"
+            android:persistent="false" />
 
-    <ListPreference
-        android:key="immersive_recents"
-        android:title="@string/immersive_recents_title"
-        android:summary="@string/immersive_recents_summary"
-        android:dialogTitle="@string/immersive_recents_dialog_title"
-        android:entries="@array/immersive_recents_entries"
-        android:entryValues="@array/immersive_recents_values"
-        android:persistent="false" />
+    	<PreferenceScreen
+            android:key="omniswitch"
+            android:id="@+id/omniswitch"
+            android:title="@string/omniswitch_settings_title"
+            android:fragment="com.android.settings.fragments.OmniSwitch" />
 
-    <com.android.settings.preference.SystemSettingSwitchPreference
-        android:key="recents_use_grid"
-        android:title="@string/recents_use_grid_title"
-        android:summary="@string/recents_use_grid_summary"
-        android:defaultValue="false" />
+    	<ListPreference
+            android:key="immersive_recents"
+            android:title="@string/immersive_recents_title"
+            android:summary="@string/immersive_recents_summary"
+            android:dialogTitle="@string/immersive_recents_dialog_title"
+            android:entries="@array/immersive_recents_entries"
+            android:entryValues="@array/immersive_recents_values"
+            android:persistent="false" />
 
-    <com.android.settings.preference.SystemSettingSwitchPreference
-        android:key="systemui_recents_mem_display"
-        android:title="@string/systemui_recents_mem_display_title"
-        android:summaryOn="@string/systemui_recents_mem_display_summaryOn"
-        android:summaryOff="@string/systemui_recents_mem_display_summaryOff"
-        android:defaultValue="false" />
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="recents_use_grid"
+            android:title="@string/recents_use_grid_title"
+            android:summary="@string/recents_use_grid_summary"
+            android:defaultValue="false" />
 
-    <com.android.settings.preference.SystemSettingSwitchPreference
-        android:key="show_clear_all_recents"
-        android:title="@string/show_clear_all_recents_button_title"
-        android:summary="@string/show_clear_all_recents_button_summary"
-        android:defaultValue="true" />
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="systemui_recents_mem_display"
+            android:title="@string/systemui_recents_mem_display_title"
+            android:summaryOn="@string/systemui_recents_mem_display_summaryOn"
+            android:summaryOff="@string/systemui_recents_mem_display_summaryOff"
+            android:defaultValue="false" />
 
-    <ListPreference
-        android:key="recents_clear_all_location"
-        android:title="@string/recents_clear_all_location_title"
-        android:entries="@array/recents_clear_all_location_entries"
-        android:entryValues="@array/recents_clear_all_location_values"
-        android:defaultValue="3"
-        android:dependency="show_clear_all_recents" />
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="show_clear_all_recents"
+            android:title="@string/show_clear_all_recents_button_title"
+            android:summary="@string/show_clear_all_recents_button_summary"
+            android:defaultValue="true" />
 
-    <ListPreference
-        android:key="pref_scrollingcache"
-        android:dialogTitle="@string/pref_scrollingcache_title"
-        android:title="@string/pref_scrollingcache_title"
-        android:entries="@array/entries_scrollingcache"
-        android:entryValues="@array/values_scrollingcache" />
+    	<ListPreference
+            android:key="recents_clear_all_location"
+            android:title="@string/recents_clear_all_location_title"
+            android:entries="@array/recents_clear_all_location_entries"
+            android:entryValues="@array/recents_clear_all_location_values"
+            android:defaultValue="3"
+            android:dependency="show_clear_all_recents" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/random_title">
+
+    	<com.android.settings.preference.SystemSettingSwitchPreference
+            android:key="quick_settings_vibrate"
+            android:title="@string/quick_settings_vibrate_title"
+            android:summary="@string/quick_settings_vibrate_summary"
+            android:defaultValue="false"/>
+
+    	<com.android.settings.preference.SecureSettingSwitchPreference
+            android:key="qs_wifi_easy_toggle"
+            android:title="@string/qs_wifi_easy_toggle_title"
+            android:summary="@string/qs_wifi_easy_toggle_summary"
+            android:defaultValue="false" />
+
+    	<com.android.settings.preference.SecureSettingSwitchPreference
+            android:key="qs_bt_easy_toggle"
+            android:title="@string/qs_bt_easy_toggle_title"
+            android:summary="@string/qs_bt_easy_toggle_summary"
+            android:defaultValue="false" />
+
+    	<com.android.settings.preference.SecureSettingSwitchPreference
+            android:key="qs_data_advanced"
+            android:title="@string/qs_advanced_data_title"
+            android:summary="@string/qs_advanced_data_summary"
+            android:defaultValue="false" />
+
+    	<ListPreference
+            android:key="pref_scrollingcache"
+            android:dialogTitle="@string/pref_scrollingcache_title"
+            android:title="@string/pref_scrollingcache_title"
+            android:entries="@array/entries_scrollingcache"
+            android:entryValues="@array/values_scrollingcache" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

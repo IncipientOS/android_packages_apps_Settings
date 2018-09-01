@@ -236,4 +236,24 @@
     <!-- Screenshot Sound  -->
     <string name="screenshot_sound_title">Enable screenshot sound</string>
     <string name="screenshot_sound_summary">Option to enable or disable the screenshot sound</string>
+
+    <!-- Miscellaneous Category Names  -->
+    <string name="recents_title">Recents</string>
+    <string name="random_title">Random</string>
+
+    <!-- QuickSettings haptic feedback -->
+    <string name="quick_settings_vibrate_title">Vibrate on touch</string>
+    <string name="quick_settings_vibrate_summary">Vibrate when touching tiles</string>
+
+    <!-- WiFi easy toggle  -->
+    <string name="qs_wifi_easy_toggle_title">WiFi easy toggle</string>
+    <string name="qs_wifi_easy_toggle_summary">Enable one tap action to turn wifi on or off</string>
+
+    <!-- BT easy toggle  -->
+    <string name="qs_bt_easy_toggle_title">Bluetooth easy toggle</string>
+    <string name="qs_bt_easy_toggle_summary">Enable one tap action to turn bluetooth on or off</string>
+
+    <!-- Advanced data tile -->
+    <string name="qs_advanced_data_title">Data easy toggle</string>
+    <string name="qs_advanced_data_summary">Enable one tap action to turn data on or off</string>
 </resources>
